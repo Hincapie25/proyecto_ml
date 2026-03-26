@@ -3,12 +3,13 @@ pipeline {
 
     stages {
 
-        stage('Ejecutar script directamente') {
+        stage('Ejecutar con Docker') {
             steps {
                 sh '''
-                python3 --version || apt-get update && apt-get install -y python3 python3-pip
-                pip3 install -r requirements.txt
-                python3 src/main.py
+                docker run --rm -v $(pwd):/app -w /app python:3.10 bash -c "
+                pip install -r requirements.txt &&
+                python src/main.py
+                "
                 '''
             }
         }
