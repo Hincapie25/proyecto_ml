@@ -1,21 +1,26 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10'
-        }
-    }
+    agent any
 
     stages {
 
+        stage('Instalar Python') {
+            steps {
+                sh '''
+                apt-get update
+                apt-get install -y python3 python3-pip
+                '''
+            }
+        }
+
         stage('Instalar dependencias') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
         stage('Ejecutar modelo') {
             steps {
-                sh 'python src/main.py'
+                sh 'python3 src/main.py'
             }
         }
 
