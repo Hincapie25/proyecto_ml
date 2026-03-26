@@ -3,13 +3,12 @@ pipeline {
 
     stages {
 
-        stage('Ejecutar con Docker') {
+        stage('Ejecutar script directamente') {
             steps {
                 sh '''
-                docker run --rm -v /var/jenkins_home/workspace/proyecto_ml:/app -w /app python:3.10 bash -c "
-                pip install -r requirements.txt &&
-                python src/main.py
-                "
+                python3 --version || apt-get update && apt-get install -y python3 python3-pip
+                pip3 install -r requirements.txt
+                python3 src/main.py
                 '''
             }
         }
