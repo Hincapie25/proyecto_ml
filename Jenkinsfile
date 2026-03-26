@@ -3,24 +3,14 @@ pipeline {
 
     stages {
 
-        stage('Instalar Python') {
+        stage('Ejecutar con Docker') {
             steps {
                 sh '''
-                apt-get update
-                apt-get install -y python3 python3-pip
+                docker run --rm -v /var/jenkins_home/workspace/proyecto_ml:/app -w /app python:3.10 bash -c "
+                pip install -r requirements.txt &&
+                python src/main.py
+                "
                 '''
-            }
-        }
-
-        stage('Instalar dependencias') {
-            steps {
-                sh 'pip3 install -r requirements.txt'
-            }
-        }
-
-        stage('Ejecutar modelo') {
-            steps {
-                sh 'python3 src/main.py'
             }
         }
 
